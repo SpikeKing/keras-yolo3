@@ -40,7 +40,7 @@ def _main():
 
     logging = TensorBoard(log_dir=log_dir)
     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-        monitor='val_loss', save_weights_only=False, save_best_only=True, period=3)
+        monitor='val_loss', save_weights_only=True, save_best_only=True, period=3)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
@@ -70,7 +70,7 @@ def _main():
                 initial_epoch=0,
                 callbacks=[logging, checkpoint])
         model.save_weights(log_dir + 'trained_weights_stage_1.h5')
-        model.save(log_dir + 'trained_weights_stage_1.all.h5')
+        # model.save(log_dir + 'trained_weights_stage_1.all.h5')
 
     # Unfreeze and continue training, to fine-tune.
     # Train longer if the result is not good.
@@ -90,7 +90,7 @@ def _main():
             initial_epoch=50,
             callbacks=[logging, checkpoint, reduce_lr, early_stopping])
         model.save_weights(log_dir + 'trained_weights_final.h5')
-        model.save(log_dir + 'trained_weights_final.all.h5')
+        # model.save(log_dir + 'trained_weights_final.all.h5')
 
     # Further training if needed.
 
