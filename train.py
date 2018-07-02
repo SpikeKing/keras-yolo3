@@ -14,10 +14,16 @@ from yolo3.utils import get_random_data
 
 
 def _main():
-    annotation_path = 'train.txt'
+    # annotation_path = 'train.txt'
+    # log_dir = 'logs/000/'
+    # classes_path = 'model_data/voc_classes.txt'
+    # anchors_path = 'model_data/yolo_anchors.txt'
+
+    annotation_path = 'data/WIDER_train.txt'
     log_dir = 'logs/000/'
-    classes_path = 'model_data/voc_classes.txt'
+    classes_path = 'model_data/wider_classes.txt'
     anchors_path = 'model_data/yolo_anchors.txt'
+
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
@@ -67,7 +73,7 @@ def _main():
 
     # Unfreeze and continue training, to fine-tune.
     # Train longer if the result is not good.
-    if True:
+    if False:
         for i in range(len(model.layers)):
             model.layers[i].trainable = True
         model.compile(optimizer=Adam(lr=1e-4), loss={'yolo_loss': lambda y_true, y_pred: y_pred}) # recompile to apply the change
